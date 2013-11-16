@@ -159,16 +159,20 @@ int main(void) {
 
 	TIM_Cmd(TIM2,ENABLE);
 
-	while(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_0) != SET);
-
-	GPIO_WriteBit(GPIOA,GPIO_Pin_4,Bit_RESET);
-	SPI_I2S_SendData16(SPI1,0x55);
-	while(SPI_GetTransmissionFIFOStatus(SPI1) == SPI_TransmissionFIFOStatus_Empty);
-	GPIO_WriteBit(GPIOA,GPIO_Pin_4,Bit_SET);
-	USART_SendData(USART2,SPI_I2S_ReceiveData16(SPI1));
-	GPIO_WriteBit(GPIOC,GPIO_Pin_9,Bit_SET);
-
 	while (1) {
+
+		//while(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_0) != RESET);
+		//while(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_0) != SET);
+
+		GPIO_WriteBit(GPIOA,GPIO_Pin_4,Bit_RESET);
+		SPI_I2S_SendData16(SPI1,0x55);
+		while(SPI_GetTransmissionFIFOStatus(SPI1) == SPI_TransmissionFIFOStatus_Empty);
+		GPIO_WriteBit(GPIOA,GPIO_Pin_4,Bit_SET);
+		USART_SendData(USART2,SPI_I2S_ReceiveData16(SPI1));
+		GPIO_WriteBit(GPIOC,GPIO_Pin_9,Bit_SET);
+
+		for(uint16_t i = 0;i<10000;i++);
+
 	}
 	
 	return 0;
