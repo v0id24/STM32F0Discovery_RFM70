@@ -165,11 +165,12 @@ int main(void) {
 		//while(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_0) != SET);
 
 		GPIO_WriteBit(GPIOA,GPIO_Pin_4,Bit_RESET);
-		SPI_I2S_SendData16(SPI1,0x55);
-		while(SPI_GetTransmissionFIFOStatus(SPI1) == SPI_TransmissionFIFOStatus_Empty);
+		SPI_I2S_SendData16(SPI1,0x00<<8);
+		while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
+		SPI_I2S_SendData16(SPI1,0x00<<8);
+		while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
 		GPIO_WriteBit(GPIOA,GPIO_Pin_4,Bit_SET);
 		USART_SendData(USART2,SPI_I2S_ReceiveData16(SPI1));
-		GPIO_WriteBit(GPIOC,GPIO_Pin_9,Bit_SET);
 
 		for(uint16_t i = 0;i<10000;i++);
 
